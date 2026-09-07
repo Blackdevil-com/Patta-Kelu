@@ -22,7 +22,7 @@ public class JwtService {
     @Value("${app.jwt.secret:404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970}")
     private String jwtSecret;
 
-    @Value("${app.jwt.access-token-expiration-ms:900000}")
+    @Value("${app.jwt.access-token-expiration-ms:2592000000}")
     private long accessTokenExpirationMs;
 
     private SecretKey getSigningKey() {

@@ -16,6 +16,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +28,9 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
 
     private final AuthService authService;
+
+    @Value("${app.jwt.refresh-token-expiration-ms:2592000000}")
+    private long refreshTokenExpirationMs;
 
     @PostMapping("/register")
     @Operation(summary = "Register a new user account")
@@ -97,7 +101,7 @@ public class AuthController {
         cookie.setHttpOnly(true);
         cookie.setSecure(false);
         cookie.setPath("/api/v1/auth");
-        cookie.setMaxAge(7 * 24 * 60 * 60);
+        cookie.setMaxAge((int) (refreshTokenExpirationMs / 1000));
         response.addCookie(cookie);
     }
 

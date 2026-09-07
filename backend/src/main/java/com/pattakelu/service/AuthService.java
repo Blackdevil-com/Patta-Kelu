@@ -42,7 +42,7 @@ public class AuthService {
     private final AuthenticationManager authenticationManager;
     private final UserMapper userMapper;
 
-    @Value("${app.jwt.access-token-expiration-ms:900000}")
+    @Value("${app.jwt.access-token-expiration-ms:2592000000}")
     private long accessTokenExpirationMs;
 
     @Transactional
