@@ -1,0 +1,72 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: pattakelu-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: pattakelu
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - pattakelu-network
+
+  redis:
+    image: redis:7-alpine
+    container_name: pattakelu-redis
+    restart: unless-stopped
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis_data:/data
+    networks:
+      - pattakelu-network
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: pattakelu-backend
+    restart: unless-stopped
+    environment:
+      SPRING_PROFILES_ACTIVE: prod
+      DATABASE_URL: jdbc:postgresql://postgres:5432/pattakelu
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgrespassword
+      JWT_SECRET: 404E635266556A586E3272357538782F413F4428472B4B6250645367566B5970
+    ports:
+      - "8081:8081"
+    depends_on:
+      - postgres
+      - redis
+    volumes:
+      - audio_storage:/app/uploads
+    networks:
+      - pattakelu-network
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: pattakelu-frontend
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - pattakelu-network
+
+volumes:
+  postgres_data:
+  redis_data:
+  audio_storage:
+
+networks:
+  pattakelu-network:
+    driver: bridge

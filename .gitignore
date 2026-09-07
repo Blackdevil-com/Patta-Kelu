@@ -1,0 +1,106 @@
+# ==============================================================================
+#                      PATTA KELU - ROOT .GITIGNORE
+# ==============================================================================
+
+# ------------------------------------------------------------------------------
+# 1. Operating System & Editor Specific Files
+# ------------------------------------------------------------------------------
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+[Dd]esktop.ini
+
+# IDE & Editor Configs
+.idea/
+*.iml
+*.iws
+*.ipr
+.vscode/
+*.sublime-workspace
+*.sublime-project
+*.swp
+*.swo
+*~
+
+# ------------------------------------------------------------------------------
+# 2. Local Environment & Secret Files (CRITICAL: Never commit secrets)
+# ------------------------------------------------------------------------------
+.env
+.env.local
+.env.*.local
+*.env
+secrets.properties
+credentials.json
+*.pem
+*.key
+
+# ------------------------------------------------------------------------------
+# 3. Backend (Java / Spring Boot / Maven / Gradle)
+# ------------------------------------------------------------------------------
+**/backend/target/
+**/backend/build/
+**/backend/out/
+**/backend/.gradle/
+**/backend/bin/
+**/backend/.settings/
+**/backend/.project
+**/backend/.classpath
+
+# Embedded Database Files (H2 database files)
+**/backend/data/
+*.mv.db
+*.trace.db
+*.lock.db
+
+# User Uploads & Media Assets (keep uploads directory structure if needed)
+**/backend/uploads/audio/*
+!**/backend/uploads/audio/.gitkeep
+**/backend/uploads/images/*
+!**/backend/uploads/images/.gitkeep
+uploads/audio/*
+!uploads/audio/.gitkeep
+uploads/images/*
+!uploads/images/.gitkeep
+
+# ------------------------------------------------------------------------------
+# 4. Frontend (Node.js / React / Vite / TypeScript)
+# ------------------------------------------------------------------------------
+**/node_modules/
+**/frontend/node_modules/
+**/frontend/dist/
+**/frontend/build/
+.pnp
+.pnp.js
+
+# Testing & Coverage
+**/coverage/
+*.lcov
+.nyc_output/
+
+# Logs & Debugging
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+**/logs/
+*.log
+
+# Vite Cache
+**/frontend/.vite/
+
+# ------------------------------------------------------------------------------
+# 5. Container & Cache Artifacts
+# ------------------------------------------------------------------------------
+.dockerignore
+docker-data/
+postgres-data/
+redis-data/
+.cache/
+tmp/
+temp/
+scratch/
