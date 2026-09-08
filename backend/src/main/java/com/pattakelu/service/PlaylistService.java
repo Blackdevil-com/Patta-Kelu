@@ -131,7 +131,7 @@ public class PlaylistService {
         }
 
         String fileName = storageService.storeFile(coverFile, "images");
-        playlist.setCoverImageUrl("/uploads/" + fileName);
+        playlist.setCoverImageUrl(storageService.getPublicUrl(fileName));
         playlist = playlistRepository.save(playlist);
         return playlistMapper.toPlaylistResponse(playlist);
     }

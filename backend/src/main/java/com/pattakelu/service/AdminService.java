@@ -138,10 +138,10 @@ public class AdminService {
             audioSize = audioFile.getSize();
         }
 
-        // 5. Store cover image if present
         String coverUrl = null;
         if (coverImageFile != null && !coverImageFile.isEmpty()) {
-            coverUrl = "/uploads/" + storageService.storeFile(coverImageFile, "images");
+            String key = storageService.storeFile(coverImageFile, "images");
+            coverUrl = storageService.getPublicUrl(key);
         }
 
         Song song = Song.builder()

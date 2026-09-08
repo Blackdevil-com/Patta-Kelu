@@ -9,6 +9,7 @@ import org.springframework.scheduling.annotation.EnableAsync;
 public class PattaKeluApplication {
 
     public static void main(String[] args) {
+        com.pattakelu.configuration.DotenvPropertyLoader.load();
         SpringApplication.run(PattaKeluApplication.class, args);
     }
 }

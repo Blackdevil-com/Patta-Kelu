@@ -1,8 +1,22 @@
 import axios from "axios";
 
-const apiBaseUrl = import.meta.env.VITE_API_BASE_URL 
-  ? `${import.meta.env.VITE_API_BASE_URL}/api/v1` 
-  : "/api/v1";
+const getBaseUrl = (): string => {
+  // In development, prefer local Vite proxy to avoid CORS and connect directly to local backend
+  if (import.meta.env.DEV) {
+    if (import.meta.env.VITE_API_BASE_URL && !import.meta.env.VITE_API_BASE_URL.includes("onrender.com")) {
+      return `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
+    }
+    return "/api/v1";
+  }
+
+  // In production builds, use configured backend URL or fallback to relative path
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
+  }
+  return "/api/v1";
+};
+
+const apiBaseUrl = getBaseUrl();
 
 export const api = axios.create({
   baseURL: apiBaseUrl,

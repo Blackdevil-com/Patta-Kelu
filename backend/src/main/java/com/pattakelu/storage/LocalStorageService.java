@@ -170,6 +170,23 @@ public class LocalStorageService implements StorageService {
         }
     }
 
+    @Override
+    public String getPublicUrl(String fileKey) {
+        if (fileKey == null || fileKey.isBlank()) {
+            return null;
+        }
+        if (fileKey.startsWith("http://") || fileKey.startsWith("https://")) {
+            return fileKey;
+        }
+        if (fileKey.startsWith("/uploads/")) {
+            return fileKey;
+        }
+        if (fileKey.startsWith("/")) {
+            return "/uploads" + fileKey;
+        }
+        return "/uploads/" + fileKey;
+    }
+
     private Resource createFallbackAudioResource() {
         // Minimal valid MP3 header representation so client players never crash
         byte[] dummyMp3 = new byte[32768];

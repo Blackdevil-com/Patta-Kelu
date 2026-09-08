@@ -34,6 +34,6 @@ USER spring:spring
 
 COPY --from=build /app/target/pattakelu-backend-1.0.0.jar app.jar
 
-EXPOSE 8081
+EXPOSE 10000
 
 ENTRYPOINT ["java", "-Djava.security.egd=file:/dev/./urandom", "-jar", "app.jar"]

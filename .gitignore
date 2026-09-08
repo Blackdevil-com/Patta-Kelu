@@ -30,6 +30,7 @@ Thumbs.db
 # 2. Local Environment & Secret Files (CRITICAL: Never commit secrets)
 # ------------------------------------------------------------------------------
 .env
+backend/.env
 .env.local
 .env.*.local
 *.env

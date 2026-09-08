@@ -5,9 +5,11 @@ import { SongCard } from "../components/cards/SongCard";
 import { ArtistCard } from "../components/cards/ArtistCard";
 import { AlbumCard } from "../components/cards/AlbumCard";
 import { PlaylistCard } from "../components/cards/PlaylistCard";
-import { Play, Sparkles } from "lucide-react";
+import { Link } from "react-router-dom";
+import { Play, Sparkles, Music, UploadCloud, Plus } from "lucide-react";
 import { usePlayerStore } from "../stores/playerStore";
 import { useQueueStore } from "../stores/queueStore";
+import { useAuthStore } from "../stores/authStore";
 
 export const HomePage: React.FC = () => {
   const [feed, setFeed] = useState<HomeFeed | null>(null);
@@ -15,6 +17,8 @@ export const HomePage: React.FC = () => {
 
   const { setCurrentSong, setIsPlaying } = usePlayerStore();
   const { setQueue } = useQueueStore();
+  const { user } = useAuthStore();
+  const isAdmin = user?.roles?.includes("ROLE_ADMIN");
 
   useEffect(() => {
     api.get("/discover/home")
@@ -22,6 +26,13 @@ export const HomePage: React.FC = () => {
       .catch(() => {})
       .finally(() => setLoading(false));
   }, []);
+
+  const hasTrending = !!(feed?.trendingSongs && feed.trendingSongs.length > 0);
+  const hasContent = hasTrending ||
+    !!(feed?.newReleases && feed.newReleases.length > 0) ||
+    !!(feed?.topArtists && feed.topArtists.length > 0) ||
+    !!(feed?.popularAlbums && feed.popularAlbums.length > 0) ||
+    !!(feed?.featuredPlaylists && feed.featuredPlaylists.length > 0);
 
   const playAllTrending = () => {
     if (feed?.trendingSongs && feed.trendingSongs.length > 0) {
@@ -61,13 +72,31 @@ export const HomePage: React.FC = () => {
             Stream high-fidelity music, curated playlists, and chart-topping releases from visionary artists across the globe.
           </p>
           <div className="pt-2">
-            <button
-              onClick={playAllTrending}
-              className="inline-flex items-center space-x-2 bg-spotify-green hover:bg-spotify-greenHover text-black font-extrabold px-8 py-3.5 rounded-full text-sm shadow-xl hover:scale-105 active:scale-95 transition-all"
-            >
-              <Play className="w-5 h-5 fill-current" />
-              <span>Play Trending Now</span>
-            </button>
+            {hasTrending ? (
+              <button
+                onClick={playAllTrending}
+                className="inline-flex items-center space-x-2 bg-spotify-green hover:bg-spotify-greenHover text-black font-extrabold px-8 py-3.5 rounded-full text-sm shadow-xl hover:scale-105 active:scale-95 transition-all"
+              >
+                <Play className="w-5 h-5 fill-current" />
+                <span>Play Trending Now</span>
+              </button>
+            ) : isAdmin ? (
+              <Link
+                to="/admin"
+                className="inline-flex items-center space-x-2 bg-spotify-green hover:bg-spotify-greenHover text-black font-extrabold px-8 py-3.5 rounded-full text-sm shadow-xl hover:scale-105 active:scale-95 transition-all"
+              >
+                <UploadCloud className="w-5 h-5" />
+                <span>Upload Music in Admin</span>
+              </Link>
+            ) : (
+              <Link
+                to="/library"
+                className="inline-flex items-center space-x-2 bg-spotify-green hover:bg-spotify-greenHover text-black font-extrabold px-8 py-3.5 rounded-full text-sm shadow-xl hover:scale-105 active:scale-95 transition-all"
+              >
+                <Plus className="w-5 h-5" />
+                <span>Create Playlist</span>
+              </Link>
+            )}
           </div>
         </div>
         <div className="absolute right-0 top-0 bottom-0 w-1/2 opacity-30 bg-[radial-gradient(ellipse_at_top_right,_var(--tw-gradient-stops))] from-spotify-green/40 via-transparent to-transparent pointer-events-none" />
@@ -150,6 +179,40 @@ export const HomePage: React.FC = () => {
             ))}
           </div>
         </section>
+      )}
+
+      {/* Clean Library Empty State */}
+      {!hasContent && (
+        <div className="flex flex-col items-center justify-center py-16 px-6 text-center rounded-3xl bg-neutral-900/40 border border-neutral-800/60 space-y-4">
+          <div className="w-16 h-16 rounded-full bg-spotify-green/10 flex items-center justify-center text-spotify-green shadow-inner">
+            <Music className="w-8 h-8" />
+          </div>
+          <div className="space-y-1.5 max-w-md">
+            <h3 className="text-xl font-extrabold text-white">Your Clean Music Library Awaits</h3>
+            <p className="text-sm text-spotify-textMuted leading-relaxed">
+              No default songs or clutter. Share your platform with your friends, start uploading your favorite tracks, and build your own playlists!
+            </p>
+          </div>
+          <div className="pt-2">
+            {isAdmin ? (
+              <Link
+                to="/admin"
+                className="inline-flex items-center space-x-2 bg-spotify-green hover:bg-spotify-greenHover text-black font-extrabold px-6 py-3 rounded-full text-sm shadow-lg hover:scale-105 active:scale-95 transition-all"
+              >
+                <UploadCloud className="w-4 h-4" />
+                <span>Go to Admin & Upload Songs</span>
+              </Link>
+            ) : (
+              <Link
+                to="/library"
+                className="inline-flex items-center space-x-2 bg-spotify-green hover:bg-spotify-greenHover text-black font-extrabold px-6 py-3 rounded-full text-sm shadow-lg hover:scale-105 active:scale-95 transition-all"
+              >
+                <Plus className="w-4 h-4" />
+                <span>Create Your First Playlist</span>
+              </Link>
+            )}
+          </div>
+        </div>
       )}
     </div>
   );

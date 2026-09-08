@@ -11,4 +11,5 @@ public interface StorageService {
     long getFileSize(String fileKey);
     InputStream getByteRangeStream(String fileKey, long start, long length);
     void deleteFile(String fileKey);
+    String getPublicUrl(String fileKey);
 }

@@ -64,7 +64,7 @@ public class UserService {
         }
 
         String fileName = storageService.storeFile(imageFile, "images");
-        String imageUrl = "/uploads/" + fileName;
+        String imageUrl = storageService.getPublicUrl(fileName);
         user.setProfileImageUrl(imageUrl);
 
         user = userRepository.save(user);
