@@ -1,22 +1,24 @@
 import axios from "axios";
 
 const getBaseUrl = (): string => {
-  // In development, prefer local Vite proxy to avoid CORS and connect directly to local backend
-  if (import.meta.env.DEV) {
-    if (import.meta.env.VITE_API_BASE_URL && !import.meta.env.VITE_API_BASE_URL.includes("onrender.com")) {
-      return `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
+  const envUrl = import.meta.env.VITE_API_BASE_URL;
+  if (envUrl && typeof envUrl === "string" && envUrl.trim().length > 0) {
+    let clean = envUrl.trim();
+    if (clean.endsWith("/")) {
+      clean = clean.substring(0, clean.length - 1);
     }
-    return "/api/v1";
-  }
-
-  // In production builds, use configured backend URL or fallback to relative path
-  if (import.meta.env.VITE_API_BASE_URL) {
-    return `${import.meta.env.VITE_API_BASE_URL}/api/v1`;
+    if (clean.endsWith("/api/v1")) {
+      return clean;
+    }
+    if (clean.endsWith("/api")) {
+      return `${clean}/v1`;
+    }
+    return `${clean}/api/v1`;
   }
   return "/api/v1";
 };
 
-const apiBaseUrl = getBaseUrl();
+export const apiBaseUrl = getBaseUrl();
 
 export const api = axios.create({
   baseURL: apiBaseUrl,
@@ -53,7 +55,7 @@ api.interceptors.response.use(
     ) {
       originalRequest._retry = true;
       try {
-        const res = await axios.post("/api/v1/auth/refresh", {}, { withCredentials: true });
+        const res = await axios.post(`${apiBaseUrl}/auth/refresh`, {}, { withCredentials: true });
         if (res.data?.data?.accessToken) {
           setAccessToken(res.data.data.accessToken);
           originalRequest.headers.Authorization = `Bearer ${res.data.data.accessToken}`;
