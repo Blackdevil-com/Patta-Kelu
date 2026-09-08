@@ -13,6 +13,9 @@ import { LoginPage } from "./pages/LoginPage";
 import { RegisterPage } from "./pages/RegisterPage";
 import { AdminDashboardPage } from "./pages/admin/AdminDashboardPage";
 
+import { ServerWakeOverlay } from "./components/server/ServerWakeOverlay";
+import { useServerStore } from "./stores/serverStore";
+
 // Admin route guard
 const AdminRoute = ({ children }: { children: JSX.Element }) => {
   const { user, isAuthenticated, isLoading } = useAuthStore();
@@ -25,13 +28,24 @@ const AdminRoute = ({ children }: { children: JSX.Element }) => {
 
 export const App: React.FC = () => {
   const { checkAuth } = useAuthStore();
+  const { checkServer } = useServerStore();
 
   useEffect(() => {
-    checkAuth();
-  }, [checkAuth]);
+    let isMounted = true;
+    checkServer().then(() => {
+      if (isMounted) {
+        checkAuth();
+      }
+    });
+    return () => {
+      isMounted = false;
+    };
+  }, [checkServer, checkAuth]);
 
   return (
-    <BrowserRouter>
+    <>
+      <ServerWakeOverlay />
+      <BrowserRouter>
       <Routes>
         {/* Auth routes without AppLayout */}
         <Route path="/login" element={<LoginPage />} />
@@ -62,5 +76,6 @@ export const App: React.FC = () => {
         </Route>
       </Routes>
     </BrowserRouter>
+    </>
   );
 };

@@ -11,6 +11,8 @@ import { usePlayerStore } from "../stores/playerStore";
 import { useQueueStore } from "../stores/queueStore";
 import { useAuthStore } from "../stores/authStore";
 
+import { useServerStore } from "../stores/serverStore";
+
 export const HomePage: React.FC = () => {
   const [feed, setFeed] = useState<HomeFeed | null>(null);
   const [loading, setLoading] = useState(true);
@@ -18,14 +20,25 @@ export const HomePage: React.FC = () => {
   const { setCurrentSong, setIsPlaying } = usePlayerStore();
   const { setQueue } = useQueueStore();
   const { user } = useAuthStore();
+  const { isServerAwake } = useServerStore();
   const isAdmin = user?.roles?.includes("ROLE_ADMIN");
 
   useEffect(() => {
+    let isMounted = true;
+    setLoading(true);
     api.get("/discover/home")
-      .then((res) => setFeed(res.data.data))
+      .then((res) => {
+        if (isMounted) setFeed(res.data.data);
+      })
       .catch(() => {})
-      .finally(() => setLoading(false));
-  }, []);
+      .finally(() => {
+        if (isMounted) setLoading(false);
+      });
+
+    return () => {
+      isMounted = false;
+    };
+  }, [isServerAwake]);
 
   const hasTrending = !!(feed?.trendingSongs && feed.trendingSongs.length > 0);
   const hasContent = hasTrending ||

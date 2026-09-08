@@ -43,11 +43,34 @@ api.interceptors.request.use((config) => {
   return config;
 });
 
-// Automatic silent refresh on 401
+import { useServerStore } from "../stores/serverStore";
+
+// Automatic retry on server sleep & silent refresh on 401
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
+    if (!originalRequest) {
+      return Promise.reject(error);
+    }
+
+    // Check if error is due to Render sleeping server (network error, timeout, 502, 503, 504)
+    const isServerSleeping =
+      !error.response ||
+      [502, 503, 504].includes(error.response?.status) ||
+      error.code === "ECONNABORTED" ||
+      error.message?.includes("Network Error");
+
+    if (isServerSleeping && !originalRequest._serverWakeRetried) {
+      originalRequest._serverWakeRetried = true;
+      try {
+        await useServerStore.getState().triggerWake();
+        return api(originalRequest);
+      } catch (wakeErr) {
+        // Continue to reject if wake fails
+      }
+    }
+
     if (
       error.response?.status === 401 &&
       !originalRequest._retry &&
