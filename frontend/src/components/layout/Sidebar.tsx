@@ -38,12 +38,12 @@ export const Sidebar: React.FC<SidebarProps> = ({ onOpenCreatePlaylist }) => {
       <div className="p-6 flex items-center space-x-3.5">
         <img
           src="/logo.png"
-          alt="Patta Kelu"
+          alt="Paata Kelu"
           className="w-14 h-14 object-contain rounded-full drop-shadow-[0_4px_16px_rgba(29,185,84,0.35)] hover:scale-105 transition-transform flex-shrink-0"
         />
         <div>
           <span className="text-xl font-extrabold tracking-tight bg-gradient-to-r from-white via-neutral-100 to-spotify-green bg-clip-text text-transparent leading-none">
-            PATTA KELU
+            PAATA KELU
           </span>
           <span className="block text-[10px] text-spotify-textMuted uppercase font-bold tracking-widest mt-1">
             AUDIO STREAM

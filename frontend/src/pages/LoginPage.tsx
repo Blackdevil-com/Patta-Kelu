@@ -50,15 +50,15 @@ export const LoginPage: React.FC = () => {
       <div className="flex items-center space-x-4 mb-8">
         <img
           src="/logo.png"
-          alt="Patta Kelu"
+          alt="Paata Kelu"
           className="w-16 h-16 object-contain rounded-full drop-shadow-[0_4px_20px_rgba(29,185,84,0.4)]"
         />
-        <span className="text-3xl font-black tracking-tight text-white">PATTA KELU</span>
+        <span className="text-3xl font-black tracking-tight text-white">PAATA KELU</span>
       </div>
 
       <div className="bg-spotify-darkGray border border-neutral-800 w-full max-w-md p-8 rounded-3xl shadow-2xl space-y-6">
         <div className="text-center space-y-1">
-          <h2 className="text-2xl font-bold text-white">Log in to Patta Kelu</h2>
+          <h2 className="text-2xl font-bold text-white">Log in to Paata Kelu</h2>
           <p className="text-xs text-neutral-400">Welcome back! Stream music without limits.</p>
         </div>
 
@@ -137,7 +137,7 @@ export const LoginPage: React.FC = () => {
         <div className="text-center pt-2 text-xs text-neutral-400">
           Don't have an account?{" "}
           <Link to="/register" className="text-white font-bold hover:underline">
-            Sign up for Patta Kelu
+            Sign up for Paata Kelu
           </Link>
         </div>
       </div>

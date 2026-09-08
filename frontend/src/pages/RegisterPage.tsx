@@ -42,16 +42,16 @@ export const RegisterPage: React.FC = () => {
       <div className="flex items-center space-x-4 mb-8">
         <img
           src="/logo.png"
-          alt="Patta Kelu"
+          alt="Paata Kelu"
           className="w-16 h-16 object-contain rounded-full drop-shadow-[0_4px_20px_rgba(29,185,84,0.4)]"
         />
-        <span className="text-3xl font-black tracking-tight text-white">PATTA KELU</span>
+        <span className="text-3xl font-black tracking-tight text-white">PAATA KELU</span>
       </div>
 
       <div className="bg-spotify-darkGray border border-neutral-800 w-full max-w-md p-8 rounded-3xl shadow-2xl space-y-6">
         <div className="text-center space-y-1">
           <h2 className="text-2xl font-bold text-white">Sign up to start listening</h2>
-          <p className="text-xs text-neutral-400">Join millions of music lovers on Patta Kelu.</p>
+          <p className="text-xs text-neutral-400">Join millions of music lovers on Paata Kelu.</p>
         </div>
 
         {error && (

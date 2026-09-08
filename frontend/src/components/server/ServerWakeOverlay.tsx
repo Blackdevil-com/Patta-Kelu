@@ -72,7 +72,7 @@ export const ServerWakeOverlay: React.FC = () => {
         {/* Title and Dynamic Message */}
         <div className="space-y-2">
           <h2 className="text-2xl sm:text-3xl font-bold tracking-tight text-white flex items-center justify-center gap-2">
-            <span>Tuning into Patta Kelu</span>
+            <span>Tuning into Paata Kelu</span>
             <Volume2 className="w-6 h-6 text-spotify-green animate-pulse" />
           </h2>
           <p className="text-sm sm:text-base text-neutral-300 font-medium transition-all duration-300 min-h-[1.5rem]">

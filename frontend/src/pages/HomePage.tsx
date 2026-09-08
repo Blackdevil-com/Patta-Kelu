@@ -79,7 +79,7 @@ export const HomePage: React.FC = () => {
             <span>Featured Audio Experience</span>
           </div>
           <h1 className="text-3xl md:text-5xl font-extrabold tracking-tight text-white leading-tight">
-            Feel the Rhythm with <span className="text-spotify-green">Patta Kelu</span>
+            Feel the Rhythm with <span className="text-spotify-green">Paata Kelu</span>
           </h1>
           <p className="text-sm md:text-base text-neutral-300 leading-relaxed">
             Stream high-fidelity music, curated playlists, and chart-topping releases from visionary artists across the globe.
